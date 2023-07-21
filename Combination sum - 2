@@ -1,0 +1,34 @@
+class Solution {
+public:
+    void findCombos(int idx, int target, vector<int>& arr, vector<vector<int>>& ans, vector<int>& temp)
+    {
+        if(target == 0)
+        {
+            ans.push_back(temp);
+            return;
+        }
+        // looping to check for repetetive elements
+        for(int i=idx; i<arr.size(); i++)
+        {
+            // (i>idx) is to check if two continous elements are equal 
+            //then make sure to take the 1st ocurrence of the element 
+            if(i > idx && arr[i] == arr[i-1]) continue;
+
+            // arr[i] > target is to ensure we are only taking the elements
+            // which are greater than target as the candidate array is sorted so we wanna check the left side of array      
+            if(arr[i] > target) break;
+
+            temp.push_back(arr[i]);
+            findCombos(i+1, target-arr[i], arr, ans, temp);
+            temp.pop_back();   
+        }
+    }
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        sort(candidates.begin(), candidates.end());
+        vector<vector<int>> ans;
+        vector<int> temp; // a data structure to generate the combos
+        findCombos(0, target, candidates, ans, temp);
+        return ans;
+    }
+};
