@@ -1,0 +1,43 @@
+class Solution {
+public:
+    int countKDifference(vector<int>& nums, int k) {
+        int i = 0;
+        int j = 1;
+        int ans = 0;
+        sort(nums.begin(), nums.end());
+        while(j < nums.size())
+        {
+            int curr = abs(nums[i] - nums[j]);
+            if(curr > k)
+            {
+                i++;
+            }
+            else if(curr < k)
+            {
+                j++;
+            }
+            // for duplicates values
+            else
+            {
+                // initializing the count(no. of ocurrences) for duplicates
+                // c1 for pointer1(ie. i) & c2 for pointer2(ie. j)
+                int c1 = 1, c2 = 1;
+                while((i + 1 < nums.size()) && nums[i] ==  nums[i + 1])
+                {
+                    c1++;
+                    i++;
+                }
+                while((j + 1 < nums.size()) && nums[j] == nums[j + 1])
+                {
+                    c2++;
+                    j++;
+                }
+                // adding the total count of ocurrences
+                ans += (c1 * c2);
+                i++;
+                j++;
+            }
+        }
+        return ans;
+    }
+};
