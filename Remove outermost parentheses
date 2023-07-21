@@ -1,0 +1,21 @@
+class Solution {
+public:
+    string removeOuterParentheses(string s) {
+        stack<char> st;
+        string str;
+        for(auto c:s)
+        {
+            if(!st.empty())
+            str+=c;
+            if(c=='(')
+            st.push(c);
+            else
+            {
+                st.pop();
+                if(st.empty())
+                str.pop_back();
+            }
+        }
+        return str;
+    }
+};
