@@ -1,0 +1,21 @@
+class Solution {
+public:
+    int reverse(int x) {
+        int d,curval=0;
+        while(x!=0)
+        {
+            d=x%10;
+            if (curval>INT_MAX/10 || curval<INT_MIN/10)
+            {
+                return 0;
+            }
+            else{
+                curval=curval*10 + d;
+                x=x/10;
+            }
+
+        }
+        return curval;
+        
+    }
+};
