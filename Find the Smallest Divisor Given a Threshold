@@ -1,0 +1,36 @@
+class Solution {
+public:
+    bool checkSum(vector<int>& nums, int d, int th)
+    {
+        long sum=0;
+        if(d==0) return false;
+        for(int i : nums)
+        {
+            sum+=i/d;
+            if(i%d!=0)
+            {
+                sum++;
+            }
+        }
+        return sum<=th;
+    }
+    int smallestDivisor(vector<int>& nums, int threshold) {
+        
+        int n=nums.size();
+        int l=0, h=*max_element(begin(nums), end(nums));
+        while(l<h)
+        {
+            int mid=l+((h-l)/2);
+            if(checkSum(nums,mid,threshold))
+            {
+                h=mid;
+            }
+            else
+            {
+                l=mid+1;
+            }
+        }
+        return l;
+
+    }
+};
