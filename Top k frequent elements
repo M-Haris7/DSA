@@ -1,0 +1,27 @@
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+    vector<int> ans;
+    unordered_map<int, int> umap;
+    //mapping
+    for(int i=0; i<nums.size(); i++)
+    {
+        umap[nums[i]]++;
+    }
+    //converting map to vector for sorting
+    vector<pair<int,int>> freq;
+    for(auto i : umap)
+    {                  //value,   key
+        freq.push_back({i.second, i.first});
+    }
+
+    sort(freq.begin(), freq.end());
+    reverse(freq.begin(), freq.end());
+
+    for(int i=0; i<k; i++)
+    {
+        ans.push_back(freq[i].second);
+    }
+    return ans;
+    }
+};
