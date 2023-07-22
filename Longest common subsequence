@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int longestCommonSubsequence(string text1, string text2) {
+        int m = text1.length();
+        int n = text2.length();
+        // intializing 2D vector with all -1 
+        vector<vector<int>> dp(m, vector<int>(n, -1)); 
+        return getLCS(m-1, n-1, text1, text2, dp);  
+    }
+private:
+    int getLCS(int m, int n, string& text1, string& text2, vector<vector<int>>& dp)
+    {
+        // Termination condition
+        if(m < 0 || n < 0)
+        {
+            return 0;
+        }
+        // mem check
+        if(dp[m][n] != -1)
+        {
+            return dp[m][n];
+        }
+        // memoization
+        //case-1: if last char match
+        if(text1[m] == text2[n])
+        {
+            return dp[m][n] = 1 + getLCS(m-1, n-1, text1, text2, dp);
+        }
+        //case-2: if last char don't match
+        else
+        {
+            return dp[m][n] = max(getLCS(m, n-1, text1, text2, dp), getLCS(m-1, n, text1, text2, dp));
+        }
+
+    }
+};
