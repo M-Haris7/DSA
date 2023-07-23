@@ -1,0 +1,24 @@
+class Solution {
+public:
+    int getLIS(int i, int prev, vector<int> arr, vector<vector<int>>& dp, int N)
+    {
+        // Termination condition
+        if(i == N) return 0;
+        // memo check
+        if(dp[i][prev+1] != -1) return dp[i][prev+1];
+        // Case-1: Leaving an element
+        int len = 0 + getLIS(i + 1, prev, arr, dp, N);
+        // Case-2: taking an element
+        if(prev == -1 || arr[i] > arr[prev])
+        {
+            len = max(len, 1 + getLIS(i+1, i, arr, dp, N));
+        }
+        return dp[i][prev+1] = len;
+    }
+
+    int lengthOfLIS(vector<int>& nums) {
+        int N = nums.size();
+        vector<vector<int>> dp(2500, vector<int>(N+1, -1));
+        return getLIS(0, -1, nums, dp, N);
+    }
+};
