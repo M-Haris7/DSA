@@ -11,7 +11,10 @@ public:
             umap[strs[i]].push_back(s);
         }
         //inserting values
-        
+        for(auto x : umap)
+        {
+            result.push_back(x.second);
+        }
         return result;
     }
 };
