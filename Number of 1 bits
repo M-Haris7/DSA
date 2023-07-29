@@ -1,0 +1,15 @@
+class Solution {
+public:
+    int hammingWeight(uint32_t n) {
+        int count = 0;
+        while(n != 0)
+        {
+            // b1 & b2 = 1 if both b1 and b2 are 1
+            if(n & 1)
+            count++;
+            //right shift by 1
+            n = n>>1;
+        }
+        return count;
+    }
+};
