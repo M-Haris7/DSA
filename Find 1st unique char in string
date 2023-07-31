@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int firstUniqChar(string s) {
+        queue<int> q;
+        vector<int> v(26, 0);
+        for(int i=0; i<s.length(); i++)
+        {
+            char c = s[i];
+            q.push(i);
+            v[c - 'a']++;
+            while(!q.empty())
+            {
+                if(v[s[q.front()] - 'a'] > 1)
+                q.pop();
+                else
+                break;
+            }
+        }
+        if(q.empty())
+        return -1;
+        return q.front();
+    }
+};
