@@ -1,0 +1,56 @@
+APPROACH 1: USING HASHMAP (FLOYD CYCLE DETECTION)
+TC: O(N)
+SC: O(N)
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        unordered_map<ListNode*, int> m;
+        while(head)
+        {
+            m[head]++;
+            if(m[head] > 1) return head;
+            head = head->next;
+        }
+        return NULL;
+    }
+};
+
+APPROACH 2: USING FAST AND SLOW POINTERS
+TC: O(N^2) 
+SC: O(1)
+class Solution {
+public:
+    ListNode *detectCycle(ListNode *head) {
+        ListNode* slow = head;
+        ListNode* fast = head;
+        bool flag = false;
+        while(fast && fast->next)
+        {
+            slow = slow->next;
+            fast = fast->next->next;
+            if(slow == fast)
+            {
+                flag = true;
+                break;
+            }
+        }
+        if(!flag) return NULL;
+        ListNode* slow1 = head;
+        while(true)
+        {
+            ListNode* fast1 = slow;
+            while(fast1 != slow1)
+            {
+                fast1 = fast1->next;
+                if(fast1 == slow) // fast1 has completed one cycle
+                {
+                    break;
+                }
+            }
+            if(fast1 == slow1)
+            return slow1;
+            slow1 = slow1->next;
+        }
+        
+    }
+};
