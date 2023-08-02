@@ -1,0 +1,38 @@
+THIS APPROACH IS OPTIMAL ANS IS IN-PLACE
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        // base case: if one of the 2 LL is empty
+        if(list1 == NULL) return list2;
+        if(list2 == NULL) return list1;
+        // assuming list1 to be smaller in value
+        if(list1->val > list2->val)
+        {
+            swap(list1, list2);
+        }
+        // remembering head of merge sorted list
+        ListNode* ans = list1;
+        while(list1 && list2)
+        {
+            ListNode* temp = NULL;
+            while(list1 && list1->val <= list2->val)
+            {
+                temp = list1;
+                list1 = list1->next;
+            }
+            temp->next = list2;
+            swap(list1, list2);
+        }
+        return ans;
+    }
+};
