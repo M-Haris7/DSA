@@ -1,0 +1,76 @@
+class Solution {
+public:
+    int countStudents(vector<int>& students, vector<int>& sandwiches) {
+        queue<int> q;
+        for(auto i : students)
+        {
+            q.push(i);
+        }
+        // This is done because the function simulates students coming in the order specified by the students vector, but the sandwiches are considered in the opposite order becoz of using stack
+        reverse(sandwiches.begin(), sandwiches.end());
+        stack<int> s;
+        for(auto i : sandwiches)
+        {
+           s.push(i);
+        }
+        //This variable will be used to keep track of the number of consecutive students who cannot get their preferred sandwich.
+        int count = 0;
+        while(count < q.size() && !q.empty() && !s.empty())
+        {
+            int preference = q.front();
+            int currSandwich = s.top();
+            if(preference == currSandwich)
+            {
+                q.pop();
+                s.pop();
+                count = 0;
+            }
+            else
+            {
+                int x = q.front();
+                q.pop();
+                q.push(x);
+                count++;
+            } 
+        }
+        return q.size();
+        
+    }
+};
+
+Sure! Let's go through the code step by step to understand what it does:
+
+1. The function `countStudents` takes two input parameters: `students` and `sandwiches`, both of which are vectors 
+of integers passed by reference. This means that any changes made to these vectors inside the function will affect the original
+vectors outside the function.
+
+2. The function starts by creating an empty queue `q` to store the preferences of the students.
+
+3. It then loops through each element `i` in the `students` vector and pushes it onto the queue `q`. 
+The queue `q` now contains the preferences of all the students in the order they were given in the `students` vector.
+
+4. The function then reverses the `sandwiches` vector using the `reverse` function from the `<algorithm>` header. 
+This is done because the function simulates students coming in the order specified by the `students` vector,
+but the sandwiches are considered in the opposite order.
+
+5. After reversing the `sandwiches` vector, the function creates an empty stack `s` to store the available sandwiches.
+
+6. It then loops through each element `i` in the `sandwiches` vector and pushes it onto the stack `s`. 
+The stack `s` now contains the available sandwiches in the order they were given in the reversed `sandwiches` vector.
+
+7. The function initializes a variable `count` to 0. This variable will be used to keep track of the number of 
+consecutive students who cannot get their preferred sandwich.
+
+8. The function enters a while loop that continues until one of the following conditions is met:
+   - The count of students (`count`) is equal to the size of the queue `q`, meaning all students have been checked.
+   - Either the queue `q` or the stack `s` becomes empty, indicating that there are no more students or sandwiches left to check.
+
+9. Inside the loop, the function retrieves the preference of the current student from the front of the queue `q`
+and the type of sandwich available from the top of the stack `s`.
+
+10. The function then checks whether the student's preference matches the type of sandwich available:
+   - If the preference matches, it means the student can get their preferred sandwich. In this case, both the student and the sandwich are removed from their respective data structures (queue and stack), and `count` is reset to 0. This indicates that we've found a match, and we'll start counting from 0 again for the next student.
+   - If the preference does not match, it means the student cannot get their preferred sandwich at this time. In this case, the student is moved to the back of the queue `q` by popping the front element and then pushing it back. The variable `count` is incremented to keep track of consecutive students who cannot get their preferred sandwich.
+
+11. After the loop ends, the function returns the size of the queue `q`, which will be the number of students who were
+unable to get their preferred sandwiches.
