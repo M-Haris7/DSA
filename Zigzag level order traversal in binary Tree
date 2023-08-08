@@ -1,0 +1,93 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
+class Solution {
+public:
+    vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        vector<vector<int>> ans;
+        queue<TreeNode*> q;
+        if(!root) return ans;
+        q.push(root);
+        bool rightToLeft = true;
+        while(!q.empty())
+        {
+            int s = q.size();
+            vector<int> level;
+            // keep inserting till whole level is traversed
+            for(int i=0; i<s; i++)
+            {
+                TreeNode* n = q.front();
+                q.pop();
+                if(n->left)
+                    q.push(n->left);
+                if(n->right)
+                    q.push(n->right);
+                level.push_back(n->val);
+            }
+            if(!rightToLeft)
+            {
+                reverse(level.begin(), level.end());
+            }
+            rightToLeft = !rightToLeft;
+            ans.push_back(level);
+        }
+        return ans;
+
+    }
+};
+
+The given C++ code represents a function to perform zigzag-level order traversal on a binary tree and return the result as a vector of vectors. Each vector in the result represents the nodes at each level of the binary tree, and for every other level, the order of nodes is reversed.
+
+Let's break down the code step by step:
+
+1. `vector<vector<int>> zigzagLevelOrder(TreeNode* root)`: This is the function definition that takes the root of the binary tree
+as input and returns a vector of vectors of integers.
+
+2. `vector<vector<int>> ans;`: This creates an empty vector of vectors to store the final result.
+
+3. `queue<TreeNode*> q;`: This creates an empty queue of TreeNode pointers. The queue is used to perform level-order traversal of 
+the binary tree.
+
+4. `if(!root) return ans;`: If the input root is nullptr (i.e., the tree is empty), the function immediately returns the empty `ans`.
+
+5. `q.push(root);`: Pushes the root node into the queue to start the level-order traversal.
+
+6. `bool left = false;`: This boolean variable `left` is used to keep track of whether the current level should be processed in
+the regular order (left to right) or the reverse order (right to left).
+
+7. `while(!q.empty())`: This is the main loop that iterates until the queue is empty, which means all nodes have been processed.
+
+8. `int s = q.size();`: Stores the current size of the queue. This represents the number of nodes at the current level of the tree.
+
+9. `vector<int> level;`: Creates an empty vector to store the values of nodes at the current level.
+
+10. The next loop `for(int i=0; i<s; i++)` iterates through all the nodes at the current level.
+
+11. `TreeNode* n = q.front(); q.pop();`: Retrieves the front node from the queue (the oldest node at the current level) and 
+removes it from the queue.
+
+12. If the current node has a left child (`if(n->left)`), it is added to the queue to be processed later in the level-order traversal.
+
+13. If the current node has a right child (`if(n->right)`), it is also added to the queue for further processing.
+
+14. The value of the current node is added to the `level` vector, representing the nodes at the current level.
+
+15. Once all nodes at the current level have been processed, the `level` vector is added to the `ans` vector. However, before adding it,
+if the `left` variable is true (meaning the current level should be reversed), the `level` vector is reversed using `reverse(level.begin(),
+level.end())`.
+
+16. The `left` variable is toggled (switched) using `left = !left;` to switch between regular and reverse order for the next level.
+
+17. The process continues until all levels of the binary tree have been traversed.
+
+18. Finally, the function returns the `ans` vector, which contains the zigzag-level order traversal of the binary tree.
+
+The function performs a breadth-first search (BFS) to traverse the tree level by level, starting from the root and visiting all nodes on each level from left to right. For every other level, it reverses the order of nodes before adding them to the result vector, creating the zigzag pattern.
