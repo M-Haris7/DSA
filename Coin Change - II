@@ -1,0 +1,61 @@
+USING RECURSION: TC = O(2^N)
+class Solution {
+public:
+    int noOfWays(int i, vector<int>& coins, int amount)
+    {
+        // base case
+        if(amount == 0) return 1;
+        // if index out of bounds
+        if(i == coins.size())
+        return 0;
+        // if current denomination is greater than current amt skip it
+        if(amount < coins[i])
+        {
+            return noOfWays(i+1, coins, amount);
+        }
+        int take = noOfWays(i, coins, amount-coins[i]);
+        int leave = noOfWays(i+1, coins, amount);
+        return take + leave;
+
+    }
+
+
+    int change(int amount, vector<int>& coins) {
+        return noOfWays(0, coins, amount);
+    }
+};
+
+USING DP: 2 DIMENSIONAL DP
+class Solution {
+public:
+    int dp[301][5001];
+    int noOfWays(int i, vector<int>& coins, int amount)
+    {
+        // base case
+        if(amount == 0) return 1;
+        // if index out of bounds
+        if(i == coins.size())
+        return 0;
+        // memoization
+        if(dp[i][amount] != -1)
+        {
+            return dp[i][amount];
+        }
+        // if current denomination is greater than current amt skip it
+        if(amount < coins[i])
+        {
+            return dp[i][amount] = noOfWays(i+1, coins, amount);
+        }
+        int take = noOfWays(i, coins, amount-coins[i]);
+        int leave = noOfWays(i+1, coins, amount);
+        return dp[i][amount] = take + leave;
+
+    }
+
+
+    int change(int amount, vector<int>& coins) {
+        // initializing a memset of size equivalent to dp arr with every value as -1
+        memset(dp, -1, sizeof(dp));
+        return noOfWays(0, coins, amount);
+    }
+};
