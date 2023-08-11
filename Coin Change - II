@@ -25,7 +25,7 @@ public:
     }
 };
 
-USING DP: 2 DIMENSIONAL DP
+USING DP: 2 DIMENSIONAL DP     TC = O(Coins.size(), amount)
 class Solution {
 public:
     int dp[301][5001];
