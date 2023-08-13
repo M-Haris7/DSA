@@ -1,0 +1,51 @@
+RECURSION          TC: O(3^N) as there are 3 choices for every index
+
+1-D DP             TC: O(N)
+
+class Solution {
+public:
+    int N;
+    int dp[100001];
+
+    bool check(int i, vector<int>& nums)
+    {
+        bool ans = false;
+        // base case if i reaches end
+        if(i >= N) return true;
+
+        //memoization
+        if(dp[i] != -1)
+        {
+            return dp[i];
+        }
+
+        // condition-1
+        if(i+1 < N && nums[i] == nums[i+1])
+        {
+            ans = check(i+2, nums);
+        }
+        //if condition-1 returns true then we don't have to check 2 & 3 becoz question asks only one of three conditions to be true
+        if(ans) return true;
+
+        //condition-2
+        if(i+2 < N && nums[i] == nums[i+1] && nums[i+1] == nums[i+2])
+        {
+            ans = check(i+3, nums);
+        }
+        if(ans) return true;
+
+        // condition-3
+        if(i+2 < N && nums[i+1]-nums[i] == 1 && nums[i+2]-nums[i+1] == 1)
+        {
+            ans = check(i+3, nums);
+        }
+        if(ans) return true;
+        return dp[i] = ans;
+    }
+
+    bool validPartition(vector<int>& nums) {
+        N = nums.size();
+        memset(dp, -1, sizeof(dp));
+        return check(0, nums);
+    }
+};
