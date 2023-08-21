@@ -1,0 +1,22 @@
+class Solution {
+public:
+    bool repeatedSubstringPattern(string s) {
+        int n = s.length();
+        for(int len=n/2; len>=1; len--)
+        {
+            if(n % len == 0)
+            {
+                int times = n / len;
+                string subString = s.substr(0, len);
+                string ans = "";
+                while(times--)
+                {
+                    ans += subString;
+                }
+                if(s.compare(ans) == 0)
+                    return true;
+            }
+        }
+        return false;
+    }
+};
