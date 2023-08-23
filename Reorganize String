@@ -1,0 +1,53 @@
+class Solution {
+public:
+    string reorganizeString(string s) {
+        unordered_map<char, int> map;
+        int len = s.length();
+        // storing freq of chars
+        for(auto c : s)
+        {
+            map[c]++;
+        }
+        // Max heap ordered by char count
+        priority_queue<vector<int>> pq;
+        for(char ch='a'; ch<='z'; ch++)
+        {
+            if(map[ch] > 0)
+            {
+                pq.push(vector<int>{map[ch], ch});
+            }
+        }
+        string ans;
+        while(!pq.empty())
+        {
+            auto first = pq.top();
+            pq.pop();
+            if(ans.empty() || first[1] != ans.back())
+            {
+                ans += char(first[1]);
+                first[0]--;
+                if(first[0] > 0)
+                {
+                    pq.push(first);
+                }
+            }
+            else
+            {
+                if(pq.empty())
+                {
+                    return "";
+                }
+                auto second = pq.top();
+                pq.pop();
+                ans += char(second[1]);
+                second[0]--;
+                if(second[0] > 0)
+                {
+                    pq.push(second);
+                }
+                pq.push(first);
+            }
+        }
+        return ans;
+    }
+};
