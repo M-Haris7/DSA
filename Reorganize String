@@ -1,3 +1,7 @@
+APPROACH 1: MAP & MAX-HEAP(PRIORITY Q)
+TC = O(N log K) => O(N) as K=26
+SC = O(K)
+
 class Solution {
 public:
     string reorganizeString(string s) {
@@ -48,6 +52,69 @@ public:
                 pq.push(first);
             }
         }
+        return ans;
+    }
+};
+
+
+APPROACH 2: USING VECTOR(instead of hashmap as dataset has limited len = 26) AND PRIORITY Q (A BIT OPTIMIZED)
+TC = O(N log K) ~= O(N)
+SC = O(K) ~= O(1)
+
+class Solution {
+public:
+    // to create a pair of freq and its corresponding char
+    typedef pair<int, char> P;
+    string reorganizeString(string s) {
+        int n = s.length();
+        // to store freq of chars
+        vector<int> count(26, 0);
+        for(char &c : s)
+        {
+            count[c - 'a']++;
+            // if any char has freq > (n+1)/2 of str return ""
+            if(count[c - 'a'] > (n+1)/2)
+                return ""; 
+        }
+        // create a max-heap
+        priority_queue<P, vector<P>> pq;
+        for(char c='a'; c<='z'; ++c)
+        {
+            if(count[c - 'a'] > 0)
+            {
+                pq.push({count[c - 'a'], c});
+            }
+        }
+        string ans = "";
+        // if pq has size less than i.e. 1 we'll simply return the char
+        while(pq.size() >= 2)
+        {
+            // as size of pq is more than 2 we can take 2 elements
+            auto p1 = pq.top();
+            pq.pop();
+            auto p2 = pq.top();
+            pq.pop(); 
+
+            ans.push_back(p1.second);
+            p1.first--;
+            ans.push_back(p2.second);
+            p2.first--;
+
+            if(p1.first > 0)
+            {
+                pq.push(p1);
+            }
+            if(p2.first > 0)
+            {
+                pq.push(p2);
+            }
+        }
+        // if code reached this line it means pq has size=1 & that char has freq=1
+        if(!pq.empty())
+        {
+            ans.push_back(pq.top().second);
+        }
+
         return ans;
     }
 };
