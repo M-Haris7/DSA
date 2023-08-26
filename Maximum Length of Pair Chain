@@ -1,0 +1,37 @@
+class Solution {
+public:
+    static bool sortSecond(const vector<int>& v1, const vector<int>& v2)
+    {
+        return v1[1] < v2[1];
+    } 
+    int findLongestChain(vector<vector<int>>& pairs) {
+        sort(pairs.begin(), pairs.end(), sortSecond);
+        int n = pairs.size();
+        int count = 1;
+        auto last_pair = pairs[0];
+        for(int i=1; i<n; i++)
+        {
+            if(pairs[i][0] > last_pair[1])
+            {
+                last_pair = pairs[i];
+                count++;
+            }
+        }
+        return count;
+
+    }
+};
+
+Here's a breakdown of the code:
+
+1) sortSecond Function: This is a static sorting function that takes two vectors v1 and v2 as input and compares their second elements (indices [1])
+to determine the sorting order. It returns true if the second element of v1 is less than the second element of v2, indicating that v1 should come before v2 in the sorted order.
+
+2) findLongestChain Function: This function takes a 2D vector pairs as input, where each inner vector represents a pair [a, b]. The function sorts the pairs based on the
+second element of each pair using the sortSecond function. Then, it iterates through the sorted pairs and keeps track of the length of the longest chain that can be formed.
+
+i) It initializes count to 1, as there's at least one chain possible.
+ii) It initializes last_pair with the first pair in the sorted array.
+iii) It then iterates through the remaining pairs, starting from index 1.
+iv) If the first element of the current pair is greater than the second element of last_pair, it means a new chain can be formed using the current pair. 
+So, the current pair becomes the new last_pair, and the count is incremented.
