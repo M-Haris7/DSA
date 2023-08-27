@@ -1,0 +1,99 @@
+USING RECURSION: TC=O(3^N) as we have 3 choices k-1, k, k+1
+
+class Solution {
+public:
+    int n; 
+    unordered_map<int, int> map;
+
+    bool jumps(int curr_stone_idx, int prevJump, vector<int>& stones)
+    {
+        if(curr_stone_idx == n-1)
+        {
+            return true;
+        }
+        bool ans = false;
+
+        // checking 3 possibilities i.e. k-1, k, k+1
+        for(int nextJump = prevJump-1; nextJump<=prevJump+1; nextJump++)
+        {
+            if(nextJump > 0)
+            {
+                int next_stone = stones[curr_stone_idx] + nextJump;
+                if(map.find(next_stone) != map.end())
+                {
+                    ans = ans || jumps(map[next_stone], nextJump, stones);
+                }
+            }
+        }
+        return ans;
+    } 
+
+    bool canCross(vector<int>& stones) {
+        n = stones.size();
+
+        if(stones[1] != 1) return false;
+
+        // storing indesx of stones
+        for(int i=0; i<n; i++)
+        {
+            map[stones[i]] = i;
+        }
+
+        return jumps(0, 0, stones);
+
+    }
+};
+
+USING DP: 
+
+class Solution {
+public:
+    int n; 
+    unordered_map<int, int> map;
+    int dp[2001][2001];
+
+    bool jumps(int curr_stone_idx, int prevJump, vector<int>& stones)
+    {
+        if(curr_stone_idx == n-1)
+        {
+            return true;
+        }
+
+        if(dp[curr_stone_idx][prevJump] != -1)
+        {
+            return dp[curr_stone_idx][prevJump];
+        }
+
+        bool ans = false;
+
+        // checking 3 possibilities i.e. k-1, k, k+1
+        for(int nextJump = prevJump-1; nextJump<=prevJump+1; nextJump++)
+        {
+            if(nextJump > 0)
+            {
+                int next_stone = stones[curr_stone_idx] + nextJump;
+                if(map.find(next_stone) != map.end())
+                {
+                    ans = ans || jumps(map[next_stone], nextJump, stones);
+                }
+            }
+        }
+        return dp[curr_stone_idx][prevJump] = ans;
+    } 
+
+    bool canCross(vector<int>& stones) {
+        n = stones.size();
+        memset(dp, -1, sizeof(dp));
+
+        if(stones[1] != 1) return false;
+
+        // storing indesx of stones
+        for(int i=0; i<n; i++)
+        {
+            map[stones[i]] = i;
+        }
+
+        return jumps(0, 0, stones);
+
+    }
+};
