@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int n;
+    unordered_set<string> st;
+    int dp[51];
+    int helper(int idx, string& s)
+    {
+        if(idx >= n)
+        {
+            return 0;
+        }
+        if(dp[idx] != -1)
+        {
+            return dp[idx];
+        }
+        int minExtra = n;
+        string curr = "";
+        for(int i=idx; i<n; i++)
+        {
+            curr.push_back(s[i]);
+            int currExtra = 0;
+            if(st.find(curr) == st.end())
+            {
+                currExtra = curr.length();
+            }
+            int remExtra = helper(i+1, s);
+            int totalExtra = currExtra + remExtra;
+            minExtra = min(minExtra, totalExtra);
+        }
+        return dp[idx] = minExtra;
+    }
+
+    int minExtraChar(string s, vector<string>& dictionary) {
+        n = s.length();
+        memset(dp, -1, sizeof(dp));
+        for(string &substring : dictionary)
+        {
+            st.insert(substring);
+        }
+        return helper(0, s);
+    }
+};
