@@ -1,0 +1,48 @@
+USING HASH MAP:
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int n = nums.size();
+        unordered_map<int, int> mp;
+        for(int i=0; i<n; i++)
+        {
+            mp[nums[i]]++;
+        }
+        for(int i=0; i<n; i++)
+        {
+            if(mp[nums[i]] > n/2)
+            {
+                return nums[i];
+            }
+        }
+        return -1;
+    }
+};
+
+USING MOORE'S VOTING ALGORITHM
+
+class Solution {
+public:
+    int majorityElement(vector<int>& nums) {
+        int n = nums.size();
+        int count = 0, currNum;
+        for(int i=0; i<n; i++)
+        {
+            if(count == 0)
+            {
+                currNum = nums[i];
+                count++;
+            }
+            else if(nums[i] == currNum)
+            {
+                count++;
+            }
+            else
+            {
+                count--;
+            }
+        }
+        return currNum;
+    }
+};
