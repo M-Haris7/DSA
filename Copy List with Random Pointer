@@ -1,3 +1,5 @@
+USING HASH-MAP:   TC=O(N)    SC=O(N)
+
 /*
 // Definition for a Node.
 class Node {
@@ -36,5 +38,57 @@ public:
             curr = curr->next;
         }
         return umap[head];
+    }
+};
+
+
+USING INTERWAEVING OF NEW NODES:   TC=O(N)    SC=O(1)
+
+class Solution {
+public:
+    Node* copyRandomList(Node* head) {
+        if(!head)
+        {
+            return NULL;
+        }
+
+        //for creating new nodes and interwaeving them
+        Node* curr = head;
+        while(curr)
+        {
+            Node* new_node = new Node(curr->val);
+            new_node->next = curr->next;
+            curr->next = new_node;
+            curr = new_node->next;
+        }
+
+        // for assigning random pointers
+        curr = head;
+        while(curr)
+        {
+            if(curr->random)
+            {
+                curr->next->random = curr->random->next;
+            }
+            else
+            {
+                curr->next->random = NULL;
+            }
+            curr = curr->next->next;
+        }
+
+        // for restoring back the orginal pointers as in the above process orginal pointers are changed
+        Node* old_head = head;
+        Node* new_head = head->next;
+        Node* old_curr = old_head;
+        Node* new_curr = new_head;
+        while(old_curr)
+        {
+            old_curr->next = old_curr->next->next;
+            new_curr->next = new_curr->next ? new_curr->next->next : NULL;
+            old_curr = old_curr->next;
+            new_curr = new_curr->next; 
+        }
+        return new_head;
     }
 };
