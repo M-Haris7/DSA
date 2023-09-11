@@ -1,0 +1,18 @@
+class Solution {
+public:
+    vector<vector<int>> groupThePeople(vector<int>& groupSizes) {
+        vector<vector<int>> ans;
+        unordered_map<int,vector<int>> umap;
+        for(int i=0; i<groupSizes.size(); i++)
+        {
+            int keySize = groupSizes[i];
+            umap[keySize].push_back(i);
+            if(umap[keySize].size() == keySize)
+            {
+                ans.push_back(umap[keySize]);
+                umap[keySize].clear();
+            }
+        }
+        return ans;
+    }
+};
