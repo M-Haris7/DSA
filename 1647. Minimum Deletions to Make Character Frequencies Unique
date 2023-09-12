@@ -1,0 +1,56 @@
+USING UNORDERED_SET AND FREQ ARRAY:  TC=O(N) & SC=O(N)
+
+class Solution {
+public:
+    int minDeletions(string s) {
+        vector<int> freq(26,0);
+
+        for(auto ch : s)
+        {
+            freq[ch-'a']++;
+        }
+
+        int deletions = 0;
+        unordered_set<int> ust;
+        for(int i=0; i<26; i++)
+        {
+            while(freq[i] > 0 && ust.find(freq[i]) != ust.end())
+            {
+                freq[i] -= 1;
+                deletions++;
+            }
+            ust.insert(freq[i]);
+        }
+
+        return deletions;
+    }
+};
+
+USING SORTING:
+
+class Solution {
+public:
+    int minDeletions(string s) {
+        vector<int> freq(26,0);
+
+        for(auto ch : s)
+        {
+            freq[ch-'a']++;
+        }
+        
+        sort(freq.begin(), freq.end()); // O(26LOG26) ~= O(1)
+        int deletions = 0;
+        
+        for(int i=24; i>=0 && freq[i] > 0; i--)
+        {
+            if(freq[i] >= freq[i+1])
+            {
+                int prev = freq[i];
+                freq[i] = max(freq[i+1]-1, 0);
+                deletions += (prev - freq[i]);
+            }
+        }
+
+        return deletions;
+    }
+};
