@@ -1,0 +1,99 @@
+APPROACH 1: BRUTE FORCE    TC=O(N^2)   SC=O(1)
+
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int n = nums.size();
+
+        for(int i=0; i<n; i++)
+        {
+            int duplicate = nums[i];
+            for(int j=i+1; j<n; j++)
+            {
+                if(nums[j] == duplicate)
+                {
+                    return duplicate;
+                }
+            }
+        }
+
+        return -1;
+    }
+};
+
+
+APPROACH 2: USING HASHMAP   TC=O(N)  SC=O(N)
+
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        unordered_map<int,int> umap;
+        int n = nums.size();
+
+        for(int i : nums)
+        {
+            umap[i]++;
+        }
+
+        for(int i=0; i<n; i++)
+        {
+            if(umap[nums[i]] > 1)
+            {
+                return nums[i];
+            }
+        }
+
+        return -1;
+    }
+};
+
+APPROACH 3: MARKING VISITED ELEMENT BY MAKING IT -VE (BUT HERE ARRAY IS MODIFIED)  
+TC = O(N)     SC = O(1)
+
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int n = nums.size();
+
+        for(int i=0; i<n; i++)
+        {
+            int index = abs(nums[i]);
+
+            if(nums[index] < 0)
+            {
+                return index;
+            }
+
+            nums[index] = -nums[index];
+        }
+
+        return -1;
+    }
+};
+
+
+APPROACH 4: FAST AND SLOW POINTERS   TC = O(N)   SC = O(1)
+
+class Solution {
+public:
+    int findDuplicate(vector<int>& nums) {
+        int slow = nums[0];
+        int fast = nums[0];
+
+        do
+        {
+            slow = nums[slow];
+            fast = nums[nums[fast]];
+        }while(slow != fast);
+
+        slow = nums[0];
+
+        while(slow != fast)
+        {
+            slow = nums[slow];
+            fast = nums[fast];
+        }
+
+        return slow;
+    }
+};
