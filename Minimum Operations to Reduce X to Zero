@@ -1,0 +1,38 @@
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int x) {
+        int n = nums.size();
+        unordered_map<int, int> umap;
+
+        int sum = 0;
+        umap[0] = -1;
+        for(int i=0; i<n; i++)
+        {
+            sum += nums[i];
+            umap[sum] = i;
+        }
+
+        if(sum < x)
+        {
+            return -1;
+        }
+
+        int remSum = sum - x;
+        int longestSubArr = INT_MIN;
+        sum = 0;
+        for(int i=0; i<n; i++)
+        {
+            sum += nums[i];
+
+            int findSum = sum - remSum;
+
+            if(umap.find(findSum) != umap.end())
+            {
+                int idx = umap[findSum];
+                longestSubArr = max(longestSubArr, i-idx);
+            }
+        }
+
+        return longestSubArr == INT_MIN ? -1 : n-longestSubArr;
+    }
+};
