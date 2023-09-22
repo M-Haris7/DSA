@@ -1,0 +1,62 @@
+APPROACH 1: TWO POINTERS   TC = O(N)   SC = O(1)
+BUT FOR LARGE NUMBERS OF STRING S (10^9) IT IS NOT EFFICIENT
+
+class Solution {
+public:
+    bool isSubsequence(string s, string t) {
+        int len1 = s.length();
+        int len2 = t.length();
+
+        int j = 0;
+        for(int i=0; i<len2 && j<len1; i++)
+        {
+            if(s[j] == t[i])
+            {
+                j++;
+            }
+        }
+
+        return j == s.length() ? true : false;
+    }
+};
+
+APPROACH 2: MAP      TC = O(len2 * log(len1))
+
+class Solution {
+public:
+    bool isSubsequence(string s, string t) {
+        int len1 = s.length();
+        int len2 = t.length();
+
+        //key = char  : value = array of index
+        map<char,vector<int>> mp;
+
+        for(int i=0; i<len2; i++)
+        {
+            mp[t[i]].push_back(i);
+        }
+
+        int prev = -1; // maintaining a prev to check for next greater idx
+        for(int i=0; i<len1; i++)
+        {
+            char ch = s[i];
+            if(mp.find(ch) == mp.end())
+            {
+                return false;
+            }
+
+            vector<int> indices = mp[ch];
+            // binary search to obtain next greater idx
+            auto it = upper_bound(begin(indices), end(indices), prev);
+            if(it == indices.end())
+            {
+                return false;
+            }
+            // if next greater idx is found 
+            prev = *it;
+        }
+
+        //as we have checked for all false cases hence at this point condition will be true
+        return true;
+    }
+};
