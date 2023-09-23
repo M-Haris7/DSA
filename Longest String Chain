@@ -1,0 +1,71 @@
+class Solution {
+public:
+    int N;
+    int dp[1001][1001];
+    //comparator
+    static bool cmp(string &word1, string &word2)
+    {
+        return word1.length() < word2.length();
+    }
+
+    //to check predecessor
+    bool isPredecessor(string &prev, string &curr)
+    {
+        int m = prev.length();
+        int n = curr.length();
+
+        if(m >= n || n-m != 1)
+        {
+            return false;
+        }
+
+        int i = 0;
+        for(int j=0; i<m && j<n; j++)
+        {
+            if(prev[i] == curr[j])
+            {
+                i++;
+            }
+        }
+
+        return i == m ? true : false;
+    }
+
+    //Longest Increasing Subsequence
+    int LIS(vector<string>& words, int prev, int curr)
+    {
+        if(curr == N)
+        {
+            return 0;
+        }
+
+        if(prev != -1 && dp[prev][curr] != -1)
+        {
+            return dp[prev][curr];
+        }
+
+        int take = 0, leave = 0;
+
+        if(prev == -1 || isPredecessor(words[prev], words[curr]))
+        {
+            take = 1 + LIS(words, curr, curr+1);
+        }
+
+        leave = LIS(words, prev, curr+1);
+
+        if(prev != -1)
+        {
+            dp[prev][curr] = max(take, leave);
+        }
+
+        return max(take, leave);
+    }
+
+    int longestStrChain(vector<string>& words) {
+        N = words.size();
+        memset(dp, -1, sizeof(dp));
+        sort(words.begin(), words.end(), cmp);
+
+        return LIS(words, -1, 0);
+    }
+};
