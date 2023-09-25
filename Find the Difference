@@ -1,0 +1,53 @@
+APPROACH 1: USING SORTING  
+
+class Solution {
+public:
+    char findTheDifference(string s, string t) {
+        sort(t.begin(), t.end());
+        sort(s.begin(), s.end());
+
+        for(int i=0; i<t.length(); i++)
+        {
+            if(s[i] != t[i])
+            {
+                return t[i];
+            }
+        }
+
+        return NULL;
+    }
+};
+
+
+APPROACH 2: USING UNORDERED MAP
+
+class Solution {
+public:
+    char findTheDifference(string s, string t) {
+        int m = s.length();
+        int n = t.length();
+
+        unordered_map<char,int> umap;
+
+        for(auto ch : t)
+        {
+            umap[ch]++;
+        }
+
+        for(auto ch : s)
+        {
+            umap[ch]--;
+        }
+
+        for(auto it : umap)
+        {
+            if(it.second == 1)
+            {
+                return it.first;
+            }
+        }
+        
+
+        return NULL;
+    }
+};
