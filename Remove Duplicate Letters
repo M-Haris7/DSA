@@ -1,0 +1,37 @@
+class Solution {
+public:
+    string removeDuplicateLetters(string s) {
+        int n = s.length();
+
+        string ans;
+
+        vector<bool> isTaken(26, false);
+        vector<int> lastOccurrenceIdx(26);
+
+        for(int i=0; i<n; i++)
+        {
+            char ch = s[i];
+            lastOccurrenceIdx[ch - 'a'] = i;
+        }
+
+        for(int i=0; i<n; i++)
+        {
+            char ch = s[i];
+            int idx = ch - 'a';
+
+            if(isTaken[idx] == true)
+                continue;
+            
+            while(ans.length() > 0 && ans.back() > ch && lastOccurrenceIdx[ans.back() - 'a'] > i)
+            {
+                isTaken[ans.back() - 'a'] = false;
+                ans.pop_back();
+            }
+
+            ans.push_back(ch);
+            isTaken[idx] = true;
+        }
+
+        return ans;
+    }
+};
