@@ -1,0 +1,53 @@
+APPROACH 1: USING EXTRA ARRAY
+
+class Solution {
+public:
+    vector<int> sortArrayByParity(vector<int>& nums) {
+        int n = nums.size();
+
+        if(n == 1)
+        {
+            return nums;
+        }
+
+        vector<int> ans;
+
+        for(int i=0; i<n; ++i)
+        {
+            if(nums[i] % 2 == 0)
+            {
+                ans.insert(ans.begin(), nums[i]);
+            }
+            else
+            {
+                ans.push_back(nums[i]);
+            }
+        }
+
+        return ans;
+    }
+};
+
+APROACH 2: INPLACE USING SWAP()
+
+class Solution {
+public:
+    vector<int> sortArrayByParity(vector<int>& nums) {
+        int n = nums.size();
+
+        if(n == 1)
+        {
+            return nums;
+        }
+
+        for(int i=0, j=0; i<n; ++i)
+        {
+            if(nums[i] % 2 == 0)
+            {
+                swap(nums[j++], nums[i]);
+            }
+        }
+
+        return nums;
+    }
+};
