@@ -1,0 +1,71 @@
+APPROACH 1: 2 CALLS
+
+class Solution {
+public:
+    int n;
+    bool isIncreasing(vector<int>& nums)
+    {
+        n = nums.size();
+        int i = 0;
+        for(int j=1; j<n; j++)
+        {
+            if(nums[i] <= nums[j])
+            {
+                i++;
+            }
+        }
+
+        return i == n-1 ? true : false;
+    }
+
+    bool isDecreasing(vector<int>& nums)
+    {
+        n = nums.size();
+        int i = 0;
+        for(int j=1; j<n; j++)
+        {
+            if(nums[i] >= nums[j])
+            {
+                i++;
+            }
+        }
+
+        return i == n-1 ? true : false;
+    }
+
+    bool isMonotonic(vector<int>& nums) {
+        return isIncreasing(nums) || isDecreasing(nums); 
+    }
+};
+
+APPROACH 2: SINGLE PASS
+
+class Solution {
+public:
+    bool isMonotonic(vector<int>& nums) {
+        int n = nums.size();
+
+        bool increase = false;
+        bool decrease = false;
+
+        for(int i=0; i<n-1; ++i)
+        {
+            if(nums[i] < nums[i+1])
+            {
+                increase = true;
+            }
+            if(nums[i] > nums[i+1])
+            {
+                decrease = true;
+            }
+        }
+
+        // if both are true then condition not satisfied
+        if(increase && decrease)
+        {
+            return false;
+        }
+
+        return true;
+    }
+};
