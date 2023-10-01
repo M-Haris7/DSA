@@ -1,0 +1,40 @@
+class Solution {
+public:
+    string reverseWords(string s) {
+        s += " ";
+        vector<string> words;
+        vector<string> reverseWords;
+        string ans = "";
+
+        string word = "";
+        for(auto ch : s)
+        {
+            
+            if(ch == ' ')
+            {
+                words.push_back(word);
+                //cout << word << endl;
+                word = "";
+            }
+            else
+            {
+                word += ch;
+            }
+        }
+
+        for(auto rev : words)
+        {
+            string str = string(rev.rbegin(), rev.rend());
+            //cout << str << endl;
+            reverseWords.push_back(str);
+        }
+
+        for(auto str : reverseWords)
+        {
+            ans = ans + str + " ";
+        }
+
+        string result = ans.substr(0, ans.length()-1);
+        return result;
+    }
+};
