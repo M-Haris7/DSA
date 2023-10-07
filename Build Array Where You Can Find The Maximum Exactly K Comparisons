@@ -1,0 +1,44 @@
+class Solution {
+public:
+    int len, range, cost; 
+    int MOD = 1e9+7;
+    int dp[51][51][101];
+
+    int possibilities(int idx, int searchCost, int max)
+    {
+        if(idx == len)
+        {
+            if(searchCost == cost)
+                return 1;
+            return 0;
+        }
+
+        if(dp[idx][searchCost][max] != -1)
+        {
+            return dp[idx][searchCost][max];
+        }
+
+        int ans = 0;
+        for(int i=1; i<=range; i++)
+        {
+            if(i > max)
+            {
+                ans = (ans + possibilities(idx+1, searchCost+1, i)) % MOD;
+            }
+            else
+            {
+                ans = (ans +possibilities(idx+1, searchCost, max)) % MOD;
+            }
+        }
+        
+        return dp[idx][searchCost][max] = ans;
+    }
+
+    int numOfArrays(int n, int m, int k) {
+        len = n; 
+        range = m; 
+        cost = k;
+        memset(dp, -1, sizeof(dp));
+        return possibilities(0, 0, 0);
+    }
+};
