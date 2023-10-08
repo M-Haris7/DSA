@@ -1,0 +1,60 @@
+class Solution {
+public:
+    int dp[501][501];
+    int solve(int i, int j, vector<int>& nums1, vector<int>& nums2)
+    {
+        if(i == nums1.size() || j == nums2.size())
+        {
+            return 0;
+        }
+
+        if(dp[i][j] != -1)
+        {
+            return dp[i][j];
+        }
+
+        // there are 3 possible ways to get max dor product:
+        int ans1 = (nums1[i] * nums2[j]) + solve(i+1, j+1, nums1, nums2);
+        int ans2 = solve(i+1, j, nums1, nums2);
+        int ans3 = solve(i, j+1, nums1, nums2);
+
+        int maxAns = max(ans1 , max(ans2, ans3));
+
+        return dp[i][j] = maxAns;
+
+    }
+
+    int maxDotProduct(vector<int>& nums1, vector<int>& nums2) {
+        // special cases: when either of of the 2 arr have all -ve elements
+        int nums1Max = INT_MIN;
+        int nums2Max = INT_MIN;
+        int nums1Min = INT_MAX;
+        int nums2Min = INT_MAX;
+
+        memset(dp, -1, sizeof(dp));
+
+        for(int ele : nums1)
+        {
+            nums1Max = max(nums1Max, ele);
+            nums1Min = min(nums1Min, ele);
+        }
+
+        for(int ele : nums2)
+        {
+            nums2Max = max(nums2Max, ele);
+            nums2Min = min(nums2Min, ele);
+        }
+
+        if(nums1Max < 0 && nums2Min > 0)
+        {
+            return nums1Max * nums2Min;
+        }
+
+        if(nums2Max < 0 && nums1Min > 0)
+        {
+            return nums1Min * nums2Max;
+        }
+
+        return solve(0, 0, nums1, nums2);
+    }
+};
