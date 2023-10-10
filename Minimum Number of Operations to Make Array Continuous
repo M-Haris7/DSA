@@ -1,0 +1,67 @@
+APPROACH 1: BRUTE FORCE     TC=O(N^2)   SC=O(N)
+
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int n = nums.size();
+        int ans = INT_MAX;
+
+        for(int i=0; i<n; i++)
+        {
+            unordered_set<int> duplicate;
+            int lo = nums[i];
+            //hi-lo = len-1
+            int hi = n-1+lo;
+            int operations = 0;
+
+            for(int j=0; j<n; j++)
+            {
+                if(nums[j] >= lo && nums[j] <= hi && duplicate.find(nums[j]) == duplicate.end())
+                {
+                    duplicate.insert(nums[j]);
+                    continue;
+                }
+                else
+                {
+                    operations++;
+                }
+            }
+
+            ans = min(ans, operations);
+        }
+        
+        return ans;
+
+    }
+};
+
+APPROACH 2: BINARY SEARCH      TC=O(NlogN)   SC=O(N)
+
+class Solution {
+public:
+    int minOperations(vector<int>& nums) {
+        int n = nums.size();
+        int ans = INT_MAX;
+        // this DS stores sorted & unique element
+        set<int> unique(begin(nums), end(nums));
+        // temp array to store new set elements
+        vector<int> temp(begin(unique), end(unique));
+
+        for(int i=0; i<temp.size(); i++)
+        {
+            int lo = temp[i];
+            //hi-lo = len-1
+            int hi = n-1+lo;
+            // as upper_bound returns a pointer so to return index we subtract by iterator
+            int j = upper_bound(begin(temp), end(temp), hi) - begin(temp);
+
+            int inRange = j - i;
+            int outRange = n - inRange;
+
+            ans = min(ans, outRange);
+        }
+        
+        return ans;
+
+    }
+};
