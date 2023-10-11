@@ -1,0 +1,29 @@
+APPROACH : BINARY SEARCH     TC=O((N + Ml)ogN)  N for flowers & M for people     
+
+class Solution {
+public:
+    vector<int> fullBloomFlowers(vector<vector<int>>& flowers, vector<int>& people) {
+        vector<int> start, stop;
+        vector<int> answer;
+
+        for(auto f : flowers)
+        {
+            start.push_back(f[0]);
+            stop.push_back(f[1]);
+        }
+
+        sort(start.begin(), start.end());
+        sort(stop.begin(), stop.end());
+
+        for(int t : people)
+        {
+            int bloom = upper_bound(start.begin(), start.end(), t) - start.begin();
+            int fade = lower_bound(stop.begin(), stop.end(), t) - stop.begin();
+            answer.push_back(bloom - fade);
+        }
+
+        return answer;
+    }
+};
+
+APPROACH 2: 
