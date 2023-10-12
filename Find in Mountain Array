@@ -15,7 +15,7 @@ public:
 
         int  lo = 0, hi = len-1;
         int mid;
-
+        // Find the peak element
         while(lo < hi)
         {
             mid = lo + ((hi-lo)/2);
@@ -32,6 +32,7 @@ public:
         int peakIdx = lo;
         int peak = mountainArr.get(lo);
 
+        // Next search in left side of the array
         lo = 0, hi = peakIdx;
         while(lo <= hi)
         {
@@ -50,6 +51,7 @@ public:
             }
         }
 
+        // Next search in right side of the array
         lo = peakIdx, hi = len-1;
         while(lo <= hi)
         {
