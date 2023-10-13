@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int dp[1001];
+    int steps(int i, vector<int>& cost)
+    {
+        if(i == cost.size()-1 || i == cost.size()-2)
+        {
+            return cost[i];
+        }
+        
+        if(dp[i] != -1)
+        {
+            return dp[i];
+        }
+
+        int oneStep = cost[i] + steps(i+1, cost);
+        int twoStep = cost[i] + steps(i+2, cost);
+
+        return dp[i] = min(oneStep, twoStep);
+    }
+
+    int minCostClimbingStairs(vector<int>& cost) {
+        memset(dp, -1, sizeof(dp));
+
+        int fromZero = steps(0, cost);
+        int fromOne = steps(1, cost);
+
+        int ans = min(fromZero, fromOne);
+
+        return ans;
+    }
+};
