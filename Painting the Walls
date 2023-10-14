@@ -1,0 +1,34 @@
+class Solution {
+public:
+    int n;
+    int dp[501][501];
+    int solve(int i, int remianingWalls, vector<int>& cost, vector<int>& time)
+    {
+        // walls consumed by free painter when paid painter is busy
+        if(remianingWalls <= 0)
+        {
+            return 0;
+        }
+        // invalid case: reached end and walls are still left
+        if(i >= n)
+        {
+            return 1e9;
+        }
+
+        if(dp[i][remianingWalls] != -1)
+        {
+            return dp[i][remianingWalls];
+        }
+
+        int paint = cost[i] + solve(i+1, remianingWalls-1-time[i], cost, time);
+        int not_paint = solve(i+1, remianingWalls, cost, time);
+
+        return dp[i][remianingWalls] = min(paint, not_paint);
+    }
+    int paintWalls(vector<int>& cost, vector<int>& time) {
+        n = cost.size();
+        memset(dp, -1, sizeof(dp));
+
+        return solve(0, n, cost, time);
+    }
+};
