@@ -1,0 +1,122 @@
+APPROACH 1: USING 2 STACKS
+
+class Solution {
+public:
+    bool backspaceCompare(string s, string t) {
+        stack<int> st1;
+        stack<int> st2;
+
+        string s1 = "";
+        string t1 = "";
+
+        for(char &c : s)
+        {
+            if(c != '#')
+            {
+                st1.push(c);
+            }
+            else if(c == '#')
+            {
+                if(!st1.empty())
+                    st1.pop();
+            }
+        }
+
+        for(char &c : t)
+        {
+            if(c != '#')
+            {
+                st2.push(c);
+            }
+            else if(c == '#')
+            {
+                if(!st2.empty())
+                    st2.pop();
+            }
+        }
+
+        if(st1.size() != st2.size())
+        {
+            return false;
+        }
+
+        while(!st1.empty())
+        {
+            if(st1.top() != st2.top())
+            {
+                return false;
+            }
+
+            st1.pop();
+            st2.pop();
+        }
+
+        return true;
+    }
+};
+
+
+APPROACH 2: USING 2 POINTERS FROM BACK OF STRINGS
+
+class Solution {
+public:
+    bool backspaceCompare(string s, string t) {
+        int i = s.length()-1;
+        int j = t.length()-1;
+
+        int hashCount_s = 0;
+        int hashCount_t = 0;
+
+        while(i >= 0 || j >= 0)
+        {
+            while(i >= 0)
+            {
+                if(s[i] == '#')
+                {
+                    hashCount_s++;
+                    i--;
+                }
+                else if(hashCount_s > 0)
+                {
+                    hashCount_s--;
+                    i--;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            while(j >= 0)
+            {
+                if(t[j] == '#')
+                {
+                    hashCount_t++;
+                    j--;
+                }
+                else if(hashCount_t > 0)
+                {
+                    hashCount_t--;
+                    j--;
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            char first = i < 0 ? '$' : s[i];
+            char second = j < 0 ? '$' : t[j];
+
+            if(first != second)
+            {
+                return false;
+            }
+
+            i--;
+            j--;
+        }
+
+        return true;
+    }
+};
