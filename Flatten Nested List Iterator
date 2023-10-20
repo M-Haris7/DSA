@@ -1,0 +1,135 @@
+APPROACH 1: USING STACK
+
+class NestedIterator {
+public:
+    // for storing objects of NestedIntegers
+    stack<NestedInteger> st;
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        int n = nestedList.size() - 1;
+
+        for(int i=n ; i>=0; i--)
+        {
+            st.push(nestedList[i]);
+        }
+    }
+    
+    int next() {
+        int num = st.top().getInteger();
+        st.pop();
+        return num;
+    }
+    
+    bool hasNext() {
+        if(st.empty())
+        {
+            return false;
+        }
+
+        while(!st.empty())
+        {
+            NestedInteger curr = st.top();
+            if(curr.isInteger())
+            {
+                return true;
+            }
+
+            st.pop();
+            vector<NestedInteger> list = curr.getList();
+            for(int i=list.size()-1; i>=0; i--)
+            {
+                st.push(list[i]);
+            }
+        }
+
+        return false;
+        
+    }
+};
+
+APPROACH 2: USING POINTERS & REFRENCES TO OPTIMIZE SPACE
+
+class NestedIterator {
+public:
+    // for storing objects of NestedIntegers
+    stack<NestedInteger*> st;
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        int n = nestedList.size() - 1;
+
+        for(int i=n ; i>=0; i--)
+        {
+            st.push(&nestedList[i]); //storing address of obj
+        }
+    }
+    
+    int next() {
+        int num = st.top()->getInteger();
+        st.pop();
+        return num;
+    }
+    
+    bool hasNext() {
+        if(st.empty())
+        {
+            return false;
+        }
+
+        while(!st.empty())
+        {
+            NestedInteger* curr = st.top();
+            if(curr->isInteger())
+            {
+                return true;
+            }
+
+            st.pop();
+            vector<NestedInteger>& list = curr->getList();// &list is used because here 'Receive by reference' is used
+            for(int i=list.size()-1; i>=0; i--)
+            {
+                st.push(&list[i]);
+            }
+        }
+
+        return false;
+        
+    }
+};
+
+APPROACH 3: OPTIMAL SOLUTION
+//If you notice, hasNext() is being called before every call to next(), and doing so much operation in
+//hasNext() is not good as it is frequently called. So, it's better to pre save the result.
+//It will make next() and hasNext() a O(1) call.
+
+class NestedIterator {
+public:
+    queue<int> q;
+    void flatList(vector<NestedInteger> &nestedList)
+    {
+        int n = nestedList.size();
+
+        for(int i=0; i<n; i++)
+        {
+            NestedInteger& obj = nestedList[i];
+            if(obj.isInteger())
+            {
+                q.push(obj.getInteger());
+            }
+            else
+            {
+                flatList(obj.getList());
+            }
+        }
+    }
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        flatList(nestedList);
+    }
+    
+    int next() {
+        int num = q.front();
+        q.pop();
+        return num;
+    }
+    
+    bool hasNext() {
+        return (!q.empty());
+    }
+};
