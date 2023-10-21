@@ -1,0 +1,76 @@
+APPROACH 1: 2-DP    TLE
+
+class Solution {
+public:
+    int n;
+    int K;
+    unordered_map<string, int> umap;
+    int solve(int i, int j, vector<int>& nums)
+    {
+        if(j >= n)
+        {
+            return 0;
+        }
+
+        string key = to_string(i) + "_" + to_string(j);
+
+        if(umap.find(key) != umap.end())
+        {
+            return umap[key];
+        }
+
+        int ans = 0;
+        if(i == -1 || j-i <= K)
+        {
+            int take = nums[j] + solve(j, j+1, nums);
+            int leave = solve(i, j+1, nums);
+            ans = max(take, leave);
+        }
+
+        return umap[key] = ans
+    }
+
+    int constrainedSubsetSum(vector<int>& nums, int k) {
+        n = nums.size();
+        K = k;
+        
+        int val = solve(-1, 0, nums);
+
+        if(val == 0)
+        {
+            val = *max_element(begin(nums), end(nums));
+        }
+
+        return val;
+    }
+};
+
+APPROACH 2: MAX HEAP/PRIORITY QUEUE
+
+class Solution {
+public:
+    typedef pair<int, int> P;
+    int constrainedSubsetSum(vector<int>& nums, int k) {
+        int n = nums.size();
+        
+        vector<int> t(n, 0);
+        t = nums;
+        priority_queue<P, vector<P>> pq;
+        pq.push({t[0], 0});
+        
+        int maxR = t[0];
+        
+        for(int i = 1; i<n; i++) {
+            
+            while(!pq.empty() && pq.top().second < i - k)
+                pq.pop();
+            
+            t[i] = max(t[i], nums[i] + pq.top().first);
+            pq.push({t[i], i});
+            
+            maxR = max(maxR, t[i]);
+        }
+        
+        return maxR;
+    }
+};
