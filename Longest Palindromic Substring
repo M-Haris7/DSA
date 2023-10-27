@@ -1,0 +1,46 @@
+class Solution {
+public:
+    int dp[1001][1001];
+    bool checkPalindrome(string& str, int i, int j)
+    {
+        if(i >= j)
+        {
+            return true;
+        }
+
+        if(dp[i][j] != -1)
+        {
+            return dp[i][j];
+        }
+        if(str[i] == str[j])
+        {
+            return dp[i][j] = checkPalindrome(str, i+1, j-1);
+        }
+
+        return dp[i][j] = 0; // false, ans not found 
+    }
+    string longestPalindrome(string s) {
+        int n = s.length();
+        memset(dp, -1, sizeof(dp));
+
+        int maxLen = INT_MIN;
+        int startPoint = 0;
+
+        for(int i=0; i<n; ++i)
+        {
+            for(int j=i; j<n; ++j)
+            {
+                if(checkPalindrome(s, i, j))
+                {
+                    if(j - i + 1 > maxLen)
+                    {
+                        maxLen = j - i + 1;
+                        startPoint = i;
+                    }
+                }
+            }
+        }
+
+        return s.substr(startPoint, maxLen);
+    }
+};
