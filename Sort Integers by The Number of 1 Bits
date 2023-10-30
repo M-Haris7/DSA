@@ -1,0 +1,33 @@
+class Solution {
+public:
+    static int countOnes(int num)
+    {
+        int count = 0;
+
+        while(num > 0)
+        {
+            count += num & 1;
+            num >>= 1;
+        }
+
+        return count;
+    }
+
+    static bool compare(int a, int b)
+    {
+        int countA = countOnes(a);
+        int countB = countOnes(b);
+        if(countA != countB)
+        {
+            return countA < countB;
+        }
+        return a < b;
+    }
+
+    vector<int> sortByBits(vector<int>& arr) {
+
+        sort(arr.begin(), arr.end(), compare);
+
+        return arr;
+    }
+};
