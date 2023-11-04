@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int getLastMoment(int n, vector<int>& left, vector<int>& right) {
+        int result = INT_MIN;
+
+        for(int i : right)
+        {
+            result = max(result, n-i);
+        }
+
+        for(int j : left)
+        {
+            result = max(result, j);
+        }
+
+        return result;
+    }
+};
