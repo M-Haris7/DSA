@@ -1,0 +1,51 @@
+APPROACH 1: USING MIN HEAP     TC=O((m+n) * log n)
+
+class SeatManager {
+public:
+    priority_queue<int, vector<int>, greater<int>> pq;
+    SeatManager(int n) {
+        for(int i=1; i<=n; ++i)
+        {
+            pq.push(i);
+        }
+    }
+    
+    int reserve() {
+        int seat = pq.top();
+        pq.pop();
+        return seat;
+    }
+    
+    void unreserve(int seatNumber) {
+        pq.push(seatNumber);
+    }
+};
+
+
+APPROACH 2:  Avoiding pre-initialising of heap   T.C : O(m* log(n)) , where m = number of reserve calls
+
+class SeatManager {
+public:
+    priority_queue<int, vector<int>, greater<int>> pq;
+    int seatMarker;
+    SeatManager(int n) {
+        seatMarker = 1;
+    }
+    
+    int reserve() {
+        if(!pq.empty())
+        {
+            int seat = pq.top();
+            pq.pop();
+            return seat;
+        }
+
+        int seat = seatMarker;
+        seatMarker++;
+        return seat;
+    }
+    
+    void unreserve(int seatNumber) {
+        pq.push(seatNumber);
+    }
+};
