@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int getWinner(vector<int>& arr, int k) {
+        int maxValue = *max_element(arr.begin(), arr.end());
+
+        queue<int> q;
+
+        for(int i=1; i<arr.size(); ++i)
+        {
+            q.push(arr[i]);
+        }
+
+        int curr = arr[0];
+        int winCount = 0;
+
+        while(!q.empty())
+        {
+            int rival = q.front();
+            q.pop();
+
+            if(curr > rival)
+            {
+                q.push(rival);
+                winCount++;
+            }
+            else
+            {
+                q.push(curr);
+                curr = rival;
+                winCount = 1;
+            }
+
+            if(winCount == k || curr == maxValue)
+            {
+                return curr;
+            }
+        }
+
+        return -1;
+    }
+};
