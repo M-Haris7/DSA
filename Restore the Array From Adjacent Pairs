@@ -1,0 +1,45 @@
+class Solution {
+public:
+    vector<int> array;
+
+    void DFS(int u, int prev, unordered_map<int, vector<int>>& adjMap)
+    {
+        array.push_back(u);
+
+        for(int& v : adjMap[u])
+        {
+            if(v != prev)
+            {
+                DFS(v, u, adjMap);
+            }
+        }
+    }
+
+    vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
+        unordered_map<int, vector<int>> adjMap;
+
+        for(auto& p : adjacentPairs)
+        {
+            int u = p[0];
+            int v = p[1];
+
+            adjMap[u].push_back(v);
+            adjMap[v].push_back(u);
+        }
+
+        int start = -1;
+
+        for(auto& it : adjMap)
+        {
+            if(it.second.size() == 1)
+            {
+                start = it.first;
+                break;
+            }
+        }
+
+        DFS(start, INT_MIN, adjMap);
+
+        return array;
+    }
+};
