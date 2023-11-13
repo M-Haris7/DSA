@@ -1,4 +1,4 @@
-APPROACH 1: USING SORT
+APPROACH 1: USING SORT    TC = O(NlogN)   SC = O(N)
 
 class Solution {
 public:
@@ -40,5 +40,52 @@ public:
     }
 };
 
+APPROACH 2: USING COUNT SORT   TC = O(N)   SC = O(1) { Map has only 10 elements hence O(1) }
+
+class Solution {
+public:
+    bool isVowel(char c)
+    {
+        return c == 'a' || c == 'e' || c == 'i' || c == 'o' || c == 'u' || c == 'A' || c == 'E' || c == 'I' || c == 'O' || c == 'U';
+    }
+    string sortVowels(string s) {
+        int n = s.length();
+        string t;
+        string vowel = "AEIOUaeiou";
+
+        unordered_map<char,int> vowelCount;
+
+        for(char ch : s)
+        {
+            if(isVowel(ch))
+            {
+                vowelCount[ch]++;
+            }
+        } 
+
+        int j = 0;
+
+        for(int i=0; i<n; i++)
+        {
+            if(isVowel(s[i]))
+            {
+               // keep skipping the vowel that is absent in original string s
+               while(vowelCount[vowel[j]] == 0)
+               {
+                   j++;
+               } 
+
+               t += vowel[j];
+               vowelCount[vowel[j]]--;
+            }
+            else
+            {
+                t += s[i];
+            }
+        }
+
+        return t;    
+    }
+};
 APPROACH 2: USING COUNTING SORT
 
