@@ -1,0 +1,85 @@
+METHOD 1: CHOOSING 1ST & LAST LETTER AND COUNTING DIFFERENT LETTER IN BETWEEN THEM
+class Solution {
+public:
+    int countPalindromicSubsequence(string s) {
+        unordered_set<char> chars;
+
+        for(char ch : s)
+        {
+            chars.insert(ch);
+        }
+
+        int count = 0;
+        for(char ch : chars)
+        {
+            int first = -1;
+            int last = 0;
+            // for finding first and last letter of palindromic string
+            for(int i=0; i<s.length(); i++)
+            {
+                if(s[i] == ch)
+                {
+                    if(first == -1)
+                    {
+                        first = i;
+                    }
+
+                    last = i;
+                }
+            }
+            // for counting different letters in between first and last chosen character
+            unordered_set<char> inBetween;
+
+            for(int i=first+1; i<last; i++)
+            {
+                inBetween.insert(s[i]);
+            }
+
+            count += inBetween.size();
+        }
+
+        return count;
+    }
+};
+
+METHOD 2: PRECOMPUTING THE 1ST & LAST INDEX OF LETTER
+
+class Solution {
+public:
+    int countPalindromicSubsequence(string s) {
+        vector<pair<int, int>> firstLast(26, {-1,-1});
+
+        // pre-compute the 1st & last index of letter
+        for(int i=0; i<s.length(); i++)
+        {
+            char ch = s[i];
+            int idx = ch - 'a';
+
+            if(firstLast[idx].first == -1)
+            {
+                firstLast[idx].first = i;
+            }
+
+            firstLast[idx].second = i;
+        }
+
+        int count = 0;
+
+        for(int i=0; i<26; i++)
+        {
+            int first = firstLast[i].first;
+            int last = firstLast[i].second;
+
+            unordered_set<char> inBetween;
+
+            for(int j=first+1; j<last; j++)
+            {
+                inBetween.insert(s[j]);
+            }
+
+            count += inBetween.size();
+        }
+
+        return count;
+    }
+};
