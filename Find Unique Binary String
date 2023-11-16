@@ -1,0 +1,52 @@
+APPROACH 1:  Iterate Over Integer Equivalents to find the missing integer
+TC = O(N^2)       SC = O(N)
+class Solution {
+public:
+    string findDifferentBinaryString(vector<string>& nums) {
+        int n = nums.size();
+        unordered_set<int> decimals;
+
+        for(auto bin : nums)
+        {
+            decimals.insert(stoi(bin, 0, 2));
+        }
+
+        // as max integer can be N(size of nums) hence iterate till N
+        for(int i=0; i<=n; ++i)
+        {
+            if(decimals.find(i) == decimals.end())
+            {
+                bitset<16> binaryBits(i);
+                string ans = binaryBits.to_string();
+                return ans.substr(16 - n);
+            }
+        }
+
+        return "";
+    }
+};
+
+APPROACH 2:  Cantor's Diagonal Argument    TC = O(N)    SC = O(1)
+
+class Solution {
+public:
+    string findDifferentBinaryString(vector<string>& nums) {
+        int n = nums.size();
+        string ans;
+
+        for(int i=0; i<n; i++)
+        {
+            char ch = nums[i][i];
+            if(ch == '0')
+            {
+                ans += '1';
+            }
+            else
+            {
+                ans += '0';
+            }
+        }
+
+        return ans;
+    }
+};
