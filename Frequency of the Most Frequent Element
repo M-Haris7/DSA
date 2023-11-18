@@ -1,0 +1,55 @@
+class Solution {
+public:
+    // custom Binary Search function
+    int customBS(int i, int k, vector<int>& nums, vector<long>& prefix)
+    {
+        int lo = 0;
+        int hi = i;
+        int target = nums[i];
+        int bestIdx = i;
+
+        while(lo <= hi)
+        {
+            int mid = lo + (hi - lo) / 2;
+
+            long count = i - mid + 1;
+            long windowSum = count * target;
+            long currSum = prefix[i] - prefix[mid] + nums[mid];
+
+            int operations = windowSum - currSum;
+
+            if(operations > k)
+            {
+                lo = mid + 1;
+            }
+            else
+            {
+                bestIdx = mid;
+                hi = mid - 1;
+            }
+        }
+
+        return i - bestIdx + 1;
+    }
+
+    int maxFrequency(vector<int>& nums, int k) {
+        int n = nums.size();
+        sort(nums.begin(), nums.end());
+
+        vector<long> prefix;
+        prefix.push_back(nums[0]);
+
+        for(int i=1; i<n; i++)
+        {
+            prefix.push_back(nums[i] + prefix.back());
+        }
+
+        int ans = 0;
+        for(int i=0; i<n; i++)
+        {
+            ans = max(ans, customBS(i, k, nums, prefix));
+        }
+
+        return ans;
+    }
+};
