@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int MOD = 1e9 + 7;
+
+    int reverse(int num)
+    {
+        int rev = 0;
+
+        while(num > 0)
+        {
+            int d = num % 10;
+            rev = (rev * 10) + d;
+            num /= 10;
+        }
+
+        return rev;
+    }
+
+    int countNicePairs(vector<int>& nums) {
+        int n = nums.size();
+        unordered_map<int, int> umap;
+
+        // regroup expressions of i and j together
+        // nums[i] + rev(nums[i]) == nums[j] + rev(nums[j])
+        for(int i=0; i<n; i++)
+        {
+            nums[i] = nums[i] - reverse(nums[i]);
+        }
+
+        int ans = 0;
+        for(int i=0; i<n; i++)
+        {
+            ans = (ans + umap[nums[i]]) % MOD;
+            umap[nums[i]]++;
+        }
+
+        return ans;
+    }
+};
