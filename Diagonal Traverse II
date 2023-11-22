@@ -1,0 +1,30 @@
+class Solution {
+public:
+    vector<int> findDiagonalOrder(vector<vector<int>>& nums) {
+        int r = nums.size();
+        unordered_map<int, vector<int>> umap;
+
+        for(int i=r-1; i>=0; i--)
+        {
+            for(int j=0; j<nums[i].size(); j++)
+            {
+                int sum = i + j;
+                umap[sum].push_back(nums[i][j]);
+            }
+        }
+
+        int currDiagonal = 0;
+        vector<int> ans;
+
+        while(umap.find(currDiagonal) != umap.end())
+        {
+            for(int &i : umap[currDiagonal])
+            {
+                ans.push_back(i);
+            }
+            currDiagonal++;
+        }
+
+        return ans;
+    }
+};
