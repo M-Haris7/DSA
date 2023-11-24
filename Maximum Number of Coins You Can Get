@@ -1,0 +1,44 @@
+APPROACH 1: USING DEQUE    TC = O(N LOG N)     SC = O(N)
+class Solution {
+public:
+    int maxCoins(vector<int>& piles) {
+        sort(piles.begin(), piles.end(), greater<int>());
+
+        deque<int> dq;
+
+        for(int num : piles)
+        {
+            dq.push_back(num);
+        }
+
+        int user = 0;
+        while(!dq.empty())
+        {
+            dq.pop_front(); // for alice
+            user += dq.front();
+            dq.pop_front();
+            dq.pop_back();// for bob
+        }
+
+        return user;
+    }
+};
+
+APPROACH 2: ONLY SORT        TC = O(N LOG N)    SC = O(1)
+class Solution {
+public:
+    int maxCoins(vector<int>& piles) {
+        sort(piles.begin(), piles.end(), greater<int>());
+
+        int n = piles.size();
+        n = n - n/3;
+        int user = 0;
+
+        for(int i=1; i<n; i+=2)
+        {
+            user += piles[i];
+        }
+
+        return user;
+    }
+};
