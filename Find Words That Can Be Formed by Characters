@@ -1,0 +1,38 @@
+class Solution {
+public:
+    bool isGood(string& word, vector<int>& charCount)
+    {
+        vector<int> count(26);
+        for(char ch : word)
+        {
+            int x = ch - 'a';
+            count[x]++;
+            if(count[x] > charCount[x])
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    int countCharacters(vector<string>& words, string chars) {
+        vector<int> charCount(26);
+
+        for(char ch : chars)
+        {
+            charCount[ch - 'a']++;
+        }
+
+        int len = 0;
+        for(string str : words)
+        {
+            if(isGood(str, charCount))
+            {
+                len += str.length();
+            }
+        }
+
+        return len;
+    }
+};
