@@ -1,0 +1,66 @@
+APPROACH 1: USING HASH MAP
+class Solution {
+public:
+    int findSpecialInteger(vector<int>& arr) {
+        int n = arr.size();
+
+        unordered_map<int,int> umap;
+
+        for(int num : arr)
+        {
+            umap[num]++;
+        }
+
+        for(int i=0; i<n; i++)
+        {
+            if(umap[arr[i]] > n/4)
+            {
+                return arr[i];
+            }
+        }
+
+        return -1;
+    }
+};
+
+APPROACH 2: BINARY SEARCH AS ARR IS SORTED
+class Solution {
+public:
+    int findSpecialInteger(vector<int>& arr) {
+        int n = arr.size();
+        int threshold = n / 4;
+        vector<int> possibleAns = {arr[n/4], arr[n/2], arr[3*n/4]};
+
+        for(int ans : possibleAns)
+        {
+            int leftIdx = lower_bound(arr.begin(), arr.end(), ans) - arr.begin();
+            int rightIdx = upper_bound(arr.begin(), arr.end(), ans) - arr.begin() - 1;
+
+            if(rightIdx - leftIdx + 1 > threshold)
+            {
+                return ans;
+            }
+        }
+
+        return -1;
+    }
+};
+
+APPROACH 3: OPTIMAL SOLUTION (https://leetcode.com/problems/element-appearing-more-than-25-in-sorted-array/editorial/?envType=daily-question&envId=2023-12-11)
+class Solution {
+public:
+    int findSpecialInteger(vector<int>& arr) {
+        int n = arr.size();
+        int threshold = n / 4;
+
+        for(int i=0; i<n-threshold; i++)
+        {
+            if(arr[i] == arr[i+threshold])
+            {
+                return arr[i];
+            }
+        }
+
+        return -1;
+    }
+};
