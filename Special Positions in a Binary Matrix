@@ -1,0 +1,48 @@
+class Solution {
+public:
+    bool checkRow(vector<vector<int>>& mat, int r)
+    {
+        int rowSum = 0;
+
+        for(int j=0; j<mat[0].size(); j++)
+        {
+            rowSum += mat[r][j];
+        }
+
+        return rowSum == 1 ? true : false;
+    }
+
+    bool checkCol(vector<vector<int>>& mat, int c)
+    {
+        int colSum = 0;
+
+        for(int i=0; i<mat.size(); i++)
+        {
+            colSum += mat[i][c];
+        }
+
+        return colSum == 1 ? true : false;
+    }
+
+    int numSpecial(vector<vector<int>>& mat) {
+        int row = mat.size();
+        int col = mat[0].size();
+        int good = 0;
+
+        for(int i=0; i<row; i++)
+        {
+            for(int j=0; j<col; j++)
+            {
+                if(mat[i][j] == 1)
+                {
+                    if(checkRow(mat, i) && checkCol(mat, j))
+                    {
+                        good++;
+                    }
+                }
+            }
+        }
+
+        return good;
+    }
+};
