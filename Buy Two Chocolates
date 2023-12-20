@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int buyChoco(vector<int>& prices, int money) {
+        int min1 = 101;
+        int min2 = 101;
+
+        for(int n : prices)
+        {
+            if(n < min1)
+            {
+                min2 = min1;
+                min1 = n;
+            }
+            else
+            {
+                min2 = min(n, min2);
+            }
+        }
+
+        int leftover = min1 + min2;
+
+        if(leftover <= money)
+        {
+            return money - leftover;
+        }
+
+        return money;
+    }
+};
