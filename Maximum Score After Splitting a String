@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int maxScore(string s) {
+        int n = s.length();
+        int maxScore = 0;
+
+        for(int i=1; i<n; i++)
+        {
+            string left = s.substr(0, i);
+            string right = s.substr(i, n-i);
+
+            int leftScore = count(left.begin(), left.end(), '0');
+            int rightScore = count(right.begin(), right.end(), '1');
+
+            maxScore = max(maxScore, leftScore + rightScore);
+        }
+
+        return maxScore;
+    }
+};
