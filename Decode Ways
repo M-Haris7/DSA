@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int dp[101];
+
+    int countWays(int i, string& s, int& n)
+    {
+        if(i == n)
+        {
+            return dp[i] = 1;
+        }
+
+        if(s[i] == '0') // no mapping of 0
+        {
+            return dp[i] = 0;
+        }
+
+        if(dp[i] != -1)
+        {
+            return dp[i];
+        }
+
+        int take_1_char = countWays(i+1, s, n);
+        int take_2_char = 0;
+
+        if(i+1 < n)
+        {
+            if(s[i] == '1' || s[i] == '2' && s[i+1] <= '6')
+            {
+                take_2_char = countWays(i+2, s, n);
+            }
+        }
+
+        return dp[i] = take_1_char + take_2_char;
+    }
+
+    int numDecodings(string s) {
+        int n = s.length();
+        memset(dp, -1, sizeof(dp));
+
+        return countWays(0, s, n);
+    }
+};
