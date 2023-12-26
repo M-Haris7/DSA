@@ -1,0 +1,36 @@
+class Solution {
+public:
+    int dp[31][1001];
+    int MOD = 1e9 + 7;
+
+    int countWays(int n, int k, int target)
+    {
+        if(target < 0)
+        {
+            return 0;
+        }
+
+        if(dp[n][target] != -1)
+        {
+            return dp[n][target];
+        }
+
+        if(n == 0)
+        {
+            return target == 0;
+        }
+
+        int ways = 0;
+        for(int dice=1; dice<=k; dice++)
+        {
+            ways = (ways + countWays(n-1, k, target-dice)) % MOD;
+        }
+
+        return dp[n][target] = ways;
+    }
+
+    int numRollsToTarget(int n, int k, int target) {
+        memset(dp, -1, sizeof(dp));
+        return countWays(n, k, target);
+    }
+};
