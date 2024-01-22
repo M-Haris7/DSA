@@ -1,0 +1,33 @@
+class Solution {
+public:
+    vector<int> findErrorNums(vector<int>& nums) {
+        int n = nums.size();
+        int duplicate = 0;
+        int missing = 0;
+
+        map<int,int> umap;
+
+        for(int x : nums)
+        {
+            umap[x]++;
+        }
+
+        int check = 1;
+        for(int x : nums)
+        {
+            if(umap[x] == 2)
+            {
+                duplicate = x;
+            }
+
+            if(umap.find(check) == umap.end())
+            {
+                missing = check;
+            }
+
+            check++;
+        }
+
+        return {duplicate, missing};
+    }
+};
