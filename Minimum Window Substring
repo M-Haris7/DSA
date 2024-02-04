@@ -1,0 +1,53 @@
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        int countRequired = t.length();
+        int n = s.length();
+
+        unordered_map<char, int> umap;
+        for(char& ch : t)
+        {
+            umap[ch]++;
+        }
+
+        int windowSize = INT_MAX;
+        int i = 0, j = 0;
+        int start = 0;
+
+        while(j < n)
+        {
+            char ch = s[j];
+
+            if(umap[ch] > 0)
+            {
+                countRequired--;
+            }
+
+            umap[ch]--;// we are also decrementing those char which are not in the map
+
+            while(countRequired == 0) // for shrinking the window
+            {
+                int currWindowSize = j - i + 1;
+
+                if(windowSize > currWindowSize)
+                {
+                    windowSize = currWindowSize;
+                    start = i;
+                }
+
+                umap[s[i]]++;
+
+                if(umap[s[i]] > 0)
+                {
+                    countRequired++;
+                }
+
+                i++;
+            }
+
+            j++;
+        }
+
+        return windowSize == INT_MAX ? "" : s.substr(start, windowSize);
+    }
+};
